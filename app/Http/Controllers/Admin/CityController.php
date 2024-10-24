@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\State;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
@@ -13,7 +14,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities = City::all();
+        $cities = City::where('status', 1)->where('deleted', 0)->get();
         return view('backend.city.index', compact('cities'));
     }
 
@@ -22,7 +23,8 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        $states = State::where('status', 1)->where('deleted', 0)->get();
+        return view('backend.city.create', compact('states'));
     }
 
     /**
@@ -30,7 +32,14 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'city_name' => 'required|string|max:255|unique:cities,city_name',
+            'city_code' => 'nullable|string|max:10|unique:cities,city_code',
+            'state_id' => 'required|exists:states,state_id', // Validation for state_id
+        ]);
+
+        City::create($validatedData);
+        return redirect()->route('admin.cities.index')->with('success', 'City created successfully.');
     }
 
     /**
@@ -44,9 +53,9 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(City $city)
     {
-        //
+        return view('backend.city.edit', compact('city'));
     }
 
     /**

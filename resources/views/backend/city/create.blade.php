@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">States</h1>
+                    <h1 class="m-0">Cities</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">States</li>
+                        <li class="breadcrumb-item active">Cities</li>
                     </ol>
                 </div>
             </div>
@@ -27,7 +27,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12 text-right mb-2"><a href="{{route('states.index')}}" class="btn btn-primary">Back</a></div>
+                <div class="col-md-12 text-right mb-2"><a href="{{route('city.index')}}" class="btn btn-primary">Back</a></div>
                 <div class="col-md-12 m-50">
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -42,20 +42,29 @@
                 <div class="col-md-12 m-50">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Add State</h3>
+                            <h3 class="card-title">Add City</h3>
                         </div>
-                        <form action="{{ route('states.store') }}" method="POST">
+                        <form action="{{ route('city.store') }}" method="POST">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="state_name">State Name</label>
-                                    <input type="text" class="form-control" id="state_name" name="state_name"
-                                        placeholder="Enter State" value="{{ old('state_name') }}">
+                                    <label for="State">Select State</label>
+                                    <select class="state-dropdown form-control" id="state_id" name="state_id">
+                                        <option value="">Select State</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->state_id }}">{{ $state->state_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="state_code">State Code</label>
-                                    <input type="text" class="form-control" id="state_code" name="state_code"
-                                        placeholder="Enter State Code" value="{{ old('state_code') }}">
+                                    <label for="city_name">City Name</label>
+                                    <input type="text" class="form-control" id="city_name" name="city_name"
+                                        placeholder="Enter City" value="{{ old('city_name') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="city_code">City Code</label>
+                                    <input type="text" class="form-control" id="city_code" name="city_code"
+                                        placeholder="Enter City Code" value="{{ old('city_code') }}">
                                 </div>
                             </div>
                             <div class="card-footer">

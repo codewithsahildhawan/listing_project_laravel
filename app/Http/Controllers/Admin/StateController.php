@@ -19,7 +19,7 @@ class StateController extends Controller
 
     public function index() 
     {
-        $states = State::all();
+        $states = State::where('status', 1)->where('deleted', 0)->get();
         if (request()->wantsJson()) {
             return response()->json([
                 'success' => true,
@@ -31,7 +31,7 @@ class StateController extends Controller
 
     public function create()
     {
-        return view('backend.state.add');
+        return view('backend.state.create');
     }
 
     /**
@@ -42,7 +42,7 @@ class StateController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'state_name' => 'required|string|max:255|unique:states,state_name',
-            'state_code' => 'nullable|string|max:10',
+            'state_code' => 'nullable|string|max:10|unique:states,state_code',
         ]);
 
         // Create and save the new state
@@ -65,7 +65,7 @@ class StateController extends Controller
      */
     public function show(State $state)
     {
-        $states = State::all();
+        $states = State::where('status', 1)->where('deleted', 0)->get();
         if (request()->wantsJson()) {
             return response()->json([
                 'success' => true,
