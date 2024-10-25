@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Districts</h1>
+                    <h1 class="m-0">SubDistricts</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Districts</li>
+                        <li class="breadcrumb-item active">SubDistricts</li>
                     </ol>
                 </div>
             </div>
@@ -29,35 +29,51 @@
             <div class="row">
                 <div class="col-md-12 text-right mb-2"><a href="{{route('districts.index')}}" class="btn btn-primary">Back</a></div>
                 <div class="col-md-12 m-50">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                <div class="col-md-12 m-50">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Edit District ({{ $district->district_name }})</h3>
+                            <h3 class="card-title">Edit SubDistrict ({{ $subdistrict->subdistrict_name }})</h3>
                         </div>
-                        <form action="{{ route('districts.update', $district->district_id) }}" method="POST">
+                        <form action="{{ route('subdistricts.update', $subdistrict->subdistrict_id) }}" method="POST">
                             @csrf
                             @method('PUT') <!-- Use PUT for updates -->
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="State">Select State</label>
-                                    <select class="state-dropdown form-control" id="state_id" name="state_id">
-                                        <option value="">Select State</option>
-                                        @foreach ($states as $state)
-                                            <option value="{{ $state->state_id }}" {{ $state->state_id == $district->state_id ? 'selected' : '' }}>
-                                                {{ $state->state_name }}
+                                    <label for="district_id">Select District</label>
+                                    <select class="district-dropdown form-control" id="district_id" name="district_id">
+                                        <option value="">Select District</option>
+                                        @foreach ($districts as $district)
+                                            <option value="{{ $district->district_id }}" {{ $district->district_id == $subdistrict->district_id ? 'selected' : '' }}>
+                                                {{ $district->district_name }} ({{ $district->district_code }})
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="district_name">District Name</label>
-                                    <input type="text" class="form-control" id="district_name" name="district_name"
-                                        placeholder="Enter State" value="{{ old('district_name', $district->district_name) }}">
+                                    <label for="subdistrict_name">SubDistrict Name</label>
+                                    <input type="text" class="form-control" id="subdistrict_name" name="subdistrict_name"
+                                        placeholder="Enter SubDistrict Name" value="{{ old('subdistrict_name', $subdistrict->subdistrict_name) }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subdistrict_code">SubDistrict Code</label>
+                                    <input type="text" class="form-control" id="subdistrict_code" name="subdistrict_code"
+                                        placeholder="Enter SubDistrict Code" value="{{ old('district_code', $subdistrict->district_code) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value="1" {{ $district->status === '1' ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ $district->status === '0' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="1" {{ $subdistrict->status === 1 ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ $subdistrict->status === 0 ? 'selected' : '' }}>Inactive</option>
                                     </select>
                                 </div>
                             </div>

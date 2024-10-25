@@ -43,8 +43,9 @@ class StateController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'state_name' => 'required|string|max:255|unique:states,state_name',
-            'state_code' => 'nullable|string|max:10|unique:states,state_code',
+            'state_code' => 'required|integer|digits_between:1,10|unique:states,state_code',
             'status' => 'required|string|in:0,1',
+            'state_ut' => 'nullable|string|max:2'
         ]);
 
         // Create and save the new state
@@ -103,6 +104,7 @@ class StateController extends Controller
             ],
             'state_code' => 'required|integer|digits_between:1,10',
             'status' => 'required|string|in:0,1',
+            'state_ut' => 'nullable|string|max:2'
         ]);
 
         // Check if validation fails
@@ -132,9 +134,12 @@ class StateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(State $state)
+    public function destroy(Request $request, $stateId)
     {
-        $state->delete();
+        $state = State::find($stateId);
+        if ($state) {
+            $state->delete(); // Soft deletes the state
+        }
         return redirect()->route('states.index')->with('success', 'State deleted successfully!');
     }
 }

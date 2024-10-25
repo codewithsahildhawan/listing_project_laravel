@@ -30,7 +30,7 @@
                 @if (session('success'))
                 <div class="col-md-12">
                     <div class="alert alert-success">{{ session('success') }}</div>
-                </div>    
+                </div>
                 @endif
                 <div class="col-md-12 text-right mb-2">
                     <a href="{{route('districts.create')}}" class="btn btn-primary">Add District</a>
@@ -40,8 +40,8 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>District Name</th>
-                                <th>State</th>
+                                <th>District Name (Code)</th>
+                                <th>State (Code)</th>
                                 <th>Active/Inactive</th>
                                 <th>Action</th>
                             </tr>
@@ -51,16 +51,17 @@
                             @foreach ($districts as $district)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ $district->district_name }}</td>
-                                <td>{{ $district->state->state_name }}</td>
-                                <td>{!! $district->status === '1' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
+                                <td>{{ $district->district_name }} ({{ $district->district_code }})</td>
+                                <td>{{ $district->state->state_name ?? 'N/A' }} ({{ $district->state_code }})</td>
+                                <td>{!! $district->status === 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
                                 <td>
                                     <a href="{{ route('districts.edit', $district->district_id ) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
                                     <form action="{{ route('districts.destroy', $district->district_id ) }}" method="POST" style="display:inline;"> <!-- Form for delete -->
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm ('Are you sure you want to delete this record?')">Delete</button>
                                     </form>
+                                    <a href="{{ route('districts.edit', $district->district_id) }}" class="btn btn-primary">View SubDistricts</a>
                                 </td>
                             </tr>
                             @php $i++; @endphp

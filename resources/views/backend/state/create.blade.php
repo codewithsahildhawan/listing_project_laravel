@@ -58,6 +58,11 @@
                                         placeholder="Enter State Code" value="{{ old('state_code') }}" required>
                                 </div>
                                 <div class="form-group">
+                                    <label for="state_ut">State UT</label>
+                                    <input type="text" class="form-control" id="state_ut" name="state_ut"
+                                        placeholder="Enter State UT" value="{{ old('state_ut') }}" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control" required>
                                         <option value="">Select Status</option>

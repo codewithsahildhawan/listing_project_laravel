@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\State;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class DistrictController extends Controller
 {
@@ -15,10 +16,19 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        $districts = District::with('state')
-                    ->where('status', 1)
-                    ->where('deleted', 0)
-                    ->get();
+        // District::where(function ($query) {
+        //     $query->whereNull('state_id')
+        //         ->orWhere('state_id', 0);
+        // })->chunk(100, function ($districts) {
+        //     foreach ($districts as $district) {
+        //         $state = State::where('state_code', $district->state_code)->first();
+        //         if ($state) {
+        //             $district->state_id = $state->state_id;
+        //             $district->save();
+        //         }
+        //     }
+        // });
+        $districts = District::with('state')->get();
         return view('backend.districts.index', compact('districts'));
     }
 
@@ -38,12 +48,16 @@ class DistrictController extends Controller
     {
         $request->validate([
             'district_name' => 'required|string|max:255|unique:districts,district_name',
-            'state_id' => 'required|exists:states,state_id',
+            'district_code' => 'required|integer|digits_between:1,10|unique:districts,district_code',
+            'state_id' => 'required|integer|exists:states,state_id',
+            'status' => 'required|string|in:0,1',
         ]);
-
-        District::create($request->all());
+        $state = State::where('state_id', $request->state_id)->firstOrFail();
+        $state_code = $state->state_code;
+        $data = $request->all();
+        $data['state_code'] = $state_code;
+        District::create($data);
         return redirect()->route('districts.index')->with('success', 'District added successfully.');
-    
     }
 
     /**
@@ -59,31 +73,50 @@ class DistrictController extends Controller
      */
     public function edit(string $id)
     {
-        $district = District::findOrFail($id); // Fetch the district by ID
-        $states = State::all(); // Get all states
-
-        return view('backend.districts.edit', compact('district', 'states')); // Pass district and states to the view
+        $district = District::findOrFail($id);
+        $states = State::where('status', 1)
+        ->where('deleted', 0)
+        ->get();
+        return view('backend.districts.edit', compact('district', 'states'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $districtId)
     {
-        $district = District::findOrFail($id); // Fetch the existing district
+        // Retrieve the district or fail if not found
+        $district = District::findOrFail($districtId);
 
-        $request->validate([
-                'district_name' => [
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'district_name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('districts')->ignore($district->id), // Ignore the current state
+                Rule::unique('districts')->ignore($district->district_id, 'district_id'), // Ignore current district_id
             ],
-            'state_id' => 'required|exists:states,state_id',
+            'district_code' => [
+                'required',
+                'integer',
+                'digits_between:1,10',
+                Rule::unique('districts')->ignore($district->district_id, 'district_id'), // Ignore based on district_id
+            ],
+            'state_id' => 'required|integer|exists:states,state_id',
+            'status' => 'required|string|in:0,1',
         ]);
 
-        // Update the district
-        $district->update($request->all());
+        // Check for validation errors
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $validatedData = $validator->validated();
+        $state = State::where('state_id', $request->state_id)->firstOrFail();
+        $state_code = $state->state_code;
+        $validatedData['state_code'] = $state_code;
+        $district->fill($validatedData);
+        $district->save();
         return redirect()->route('districts.index')->with('success', 'District updated successfully.');
     }
 

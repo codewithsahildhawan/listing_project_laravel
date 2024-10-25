@@ -40,8 +40,7 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>State Name</th>
-                                <th>State Code</th>
+                                <th>State Name (Code)</th>
                                 <th>Active/Inctive</th>
                                 <th>Action</th>
                             </tr>
@@ -51,16 +50,16 @@
                             @foreach ($states as $state)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ $state->state_name }}</td>
-                                <td>{{ $state->state_code }}</td>
+                                <td>{{ $state->state_name }} ({{ $state->state_code }})</td>
                                 <td>{!! $state->status === 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
                                 <td>
                                     <a href="{{ route('states.edit', ['state' => $state->state_id]) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
                                     <form action="{{ route('states.destroy', $state->state_id) }}" method="POST" style="display:inline;"> <!-- Form for delete -->
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm ('Are you sure you want to delete this record?')">Delete</button>
                                     </form>
+                                    <a href="{{ route('states.edit', ['state' => $state->state_id]) }}" class="btn btn-primary">View Districts</a>
                                 </td>
                             </tr>
                             @php $i++; @endphp

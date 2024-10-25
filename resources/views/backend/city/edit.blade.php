@@ -50,8 +50,8 @@
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value="1" {{ $state->status === '1' ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ $state->status === '0' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="1" {{ $state->status === 1 ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ $state->status === 0 ? 'selected' : '' }}>Inactive</option>
                                     </select>
                                 </div>
                             </div>

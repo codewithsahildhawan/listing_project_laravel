@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Add Block</h1>
+                    <h1 class="m-0">Add SubDistrict</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Add Block</li>
+                        <li class="breadcrumb-item active">Add SubDistrict</li>
                     </ol>
                 </div>
             </div>
@@ -42,9 +42,9 @@
                 <div class="col-md-12 m-50">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Add Block</h3>
+                            <h3 class="card-title">Add SubDistrict</h3>
                         </div>
-                        <form action="{{ route('districts.store') }}" method="POST">
+                        <form action="{{ route('subdistricts.store') }}" method="POST">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
@@ -52,14 +52,27 @@
                                     <select class="district-dropdown form-control" id="district_id" name="district_id">
                                         <option value="">Select District</option>
                                         @foreach ($districts as $district)
-                                            <option value="{{ $district->district_id }}">{{ $district->district_name }}</option>
+                                            <option value="{{ $district->district_id }}">{{ $district->district_name }} ({{ $district->district_code }})</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="block_name">Block Name</label>
-                                    <input type="text" class="form-control" id="block_name" name="block_name"
-                                        placeholder="Enter Block" value="{{ old('block_name') }}">
+                                    <label for="subdistrict_name">SubDistrict Name</label>
+                                    <input type="text" class="form-control" id="subdistrict_name" name="subdistrict_name"
+                                        placeholder="Enter SubDistrict Name" value="{{ old('subdistrict_name') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subdistrict_name">SubDistrict Code</label>
+                                    <input type="text" class="form-control" id="subdistrict_code" name="subdistrict_code"
+                                        placeholder="Enter SubDistrict Code" value="{{ old('subdistrict_code') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control" required>
+                                        <option value="">Select Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="card-footer">

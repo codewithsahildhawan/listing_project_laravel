@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">SubDistricts</h1>
+                    <h1 class="m-0">States</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">SubDistricts</li>
+                        <li class="breadcrumb-item active">States</li>
                     </ol>
                 </div>
             </div>
@@ -27,51 +27,52 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                @if (session('success'))
-                <div class="col-md-12">
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                </div>
-                @endif
-                <div class="col-md-12 text-right mb-2">
-                    <a href="{{route('subdistricts.create')}}" class="btn btn-primary">Add SubDistrict</a>
+                <div class="col-md-12 text-right mb-2"><a href="{{route('states.index')}}" class="btn btn-primary">Back</a></div>
+                <div class="col-md-12 m-50">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-md-12 m-50">
-                    <table id="example1" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>SubDistrict Name (Code)</th>
-                                <th>District Name (Code)</th>
-                                <th>Active/Inactive</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $i = 1; @endphp  <!-- Initialize $i to 1 -->
-                            @foreach ($subdistricts as $subdistrict)
-                                {{-- @php
-                                    echo "<pre>";
-                                    print_r($subdistrict->district);
-                                    die;
-                                @endphp  --}}
-                            <tr>
-                                <td>{{ $i }}</td>
-                                <td>{{ $subdistrict->subdistrict_name }} ({{ $subdistrict->subdistrict_code }})</td>
-                                <td>{{ !empty($subdistrict->district) ? $subdistrict->district->district_name : '' }} ({{ !empty($subdistrict->district->district_code) ? $subdistrict->district->district_code : '' }})</td>
-                                <td>{!! $subdistrict->status === 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
-                                <td>
-                                    <a href="{{ route('subdistricts.edit', $subdistrict->subdistrict_id ) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
-                                    <form action="{{ route('subdistricts.destroy', $subdistrict->subdistrict_id ) }}" method="POST" style="display:inline;"> <!-- Form for delete -->
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm ('Are you sure you want to delete this record?')">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @php $i++; @endphp
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit State ({{ $state->state_name }})</h3>
+                        </div>
+
+                        <form action="{{ route('states.update', $state->state_id) }}" method="POST">
+                            @csrf
+                            @method('PUT') <!-- Use PUT for updates -->
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="state_name">State Name</label>
+                                    <input type="text" class="form-control" id="state_name" name="state_name"
+                                        placeholder="Enter State" value="{{ old('state_name', $state->state_name) }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="state_code">State Code</label>
+                                    <input type="text" class="form-control" id="state_code" name="state_code"
+                                        placeholder="Enter State Code" value="{{ old('state_code', $state->state_code) }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="">Select Status</option>
+                                        <option value="1" {{ $state->status === '1' ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ $state->status === '0' ? 'selected' : '' }}>Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Update State</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,11 +81,8 @@
 @endsection
 
 @section('extra-script')
-
     <script src="{{ asset('backend_assets/plugins/jquery/jquery.min.js') }}"></script>
-
     <script src="{{ asset('backend_assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
     <script src="{{ asset('backend_assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('backend_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>

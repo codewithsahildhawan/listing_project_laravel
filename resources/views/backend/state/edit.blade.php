@@ -60,11 +60,16 @@
                                         placeholder="Enter State Code" value="{{ old('state_code', $state->state_code) }}">
                                 </div>
                                 <div class="form-group">
+                                    <label for="state_ut">State UT</label>
+                                    <input type="text" class="form-control" id="state_ut" name="state_ut"
+                                        placeholder="Enter State UT" value="{{ old('state_ut', $state->state_ut) }}" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Select Status</option>
-                                        <option value="1" {{ $state->status === '1' ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ $state->status === '0' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="1" {{ $state->status === 1 ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ $state->status === 0 ? 'selected' : '' }}>Inactive</option>
                                     </select>
                                 </div>
                             </div>

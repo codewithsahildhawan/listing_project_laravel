@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">SubDistricts</h1>
+                    <h1 class="m-0">Categories</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">SubDistricts</li>
+                        <li class="breadcrumb-item active">Categories</li>
                     </ol>
                 </div>
             </div>
@@ -33,38 +33,32 @@
                 </div>
                 @endif
                 <div class="col-md-12 text-right mb-2">
-                    <a href="{{route('subdistricts.create')}}" class="btn btn-primary">Add SubDistrict</a>
+                    <a href="{{route('categories.create')}}" class="btn btn-primary">Add Category</a>
                 </div>
                 <div class="col-md-12 m-50">
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>SubDistrict Name (Code)</th>
-                                <th>District Name (Code)</th>
-                                <th>Active/Inactive</th>
+                                <th>Category Name</th>
+                                <th>Parent Category</th>
+                                <th>Active/Inctive</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php $i = 1; @endphp  <!-- Initialize $i to 1 -->
-                            @foreach ($subdistricts as $subdistrict)
-                                {{-- @php
-                                    echo "<pre>";
-                                    print_r($subdistrict->district);
-                                    die;
-                                @endphp  --}}
+                            @foreach ($categories as $category)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ $subdistrict->subdistrict_name }} ({{ $subdistrict->subdistrict_code }})</td>
-                                <td>{{ !empty($subdistrict->district) ? $subdistrict->district->district_name : '' }} ({{ !empty($subdistrict->district->district_code) ? $subdistrict->district->district_code : '' }})</td>
-                                <td>{!! $subdistrict->status === 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
+                                <td>{{ $category->state_name }}</td>
+                                <td>{!! $category->status === 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
                                 <td>
-                                    <a href="{{ route('subdistricts.edit', $subdistrict->subdistrict_id ) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
-                                    <form action="{{ route('subdistricts.destroy', $subdistrict->subdistrict_id ) }}" method="POST" style="display:inline;"> <!-- Form for delete -->
+                                    <a href="{{ route('categories.edit', ['state' => $category->category_id]) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
+                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" style="display:inline;"> <!-- Form for delete -->
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm ('Are you sure you want to delete this record?')">Delete</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -72,6 +66,45 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{-- <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Example</h3>
+                        </div>
+                        <form>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1"
+                                        placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
+                                        placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">File input</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="exampleInputFile">
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div> --}}
                 </div>
             </div>
         </div>

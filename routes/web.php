@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\SubdistrictController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,9 +29,8 @@ require __DIR__.'/auth.php';
 
 Route::prefix('admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::resource('states', StateController::class)->parameters([
-        'states' => 'state:state_id',
-    ]);
+    Route::resource('states', StateController::class);
+    Route::resource('categories', CategoryController::class);
     Route::resource('districts', DistrictController::class);
     Route::resource('city', CityController::class);
     Route::resource('subdistricts', SubdistrictController::class);

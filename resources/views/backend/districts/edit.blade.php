@@ -29,6 +29,17 @@
             <div class="row">
                 <div class="col-md-12 text-right mb-2"><a href="{{route('districts.index')}}" class="btn btn-primary">Back</a></div>
                 <div class="col-md-12 m-50">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                <div class="col-md-12 m-50">
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Edit District ({{ $district->district_name }})</h3>
@@ -54,10 +65,15 @@
                                         placeholder="Enter State" value="{{ old('district_name', $district->district_name) }}">
                                 </div>
                                 <div class="form-group">
+                                    <label for="district_code">District Code</label>
+                                    <input type="text" class="form-control" id="district_code" name="district_code"
+                                        placeholder="Enter District Code" value="{{ old('district_code', $district->district_code) }}" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value="1" {{ $district->status === '1' ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ $district->status === '0' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="1" {{ $district->status === 1 ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ $district->status === 0 ? 'selected' : '' }}>Inactive</option>
                                     </select>
                                 </div>
                             </div>

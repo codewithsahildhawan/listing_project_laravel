@@ -3,23 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class State extends Model
+class Category extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'states';
-    protected $primaryKey = 'state_id';
-    protected $keyType = 'int';
+    protected $table = 'categories';
+    protected $primaryKey = 'category_id';
+    public $incrementing = true;
     protected $dates = ['deleted_at'];
     protected $fillable = [
-        'state_name',
-        'state_code',
-        'state_ut',
-        'status',
+        'category_title',
+        'cat_short_desc',
+        'cat_long_desc',
+        'cat_image',
+        'parent_id',
+        'order_by',
+        'meta_title',
+        'meta_short_desc',
+        'meta_desc',
+        'meta_keywords',
     ];
+
     public $timestamps = true; // Enable timestamps
 
     // Optionally, you can override the save method if you want to control when updated_at is set
@@ -30,10 +37,5 @@ class State extends Model
             $this->updated_at = null;
         }
         return parent::save($options);
-    }
-
-    public function districts()
-    {
-        return $this->hasMany(District::class, 'state_id');
     }
 }

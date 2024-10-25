@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('city_name');  // Name of the city
             $table->string('city_code')->nullable();  // Optional city code
             $table->unsignedBigInteger('state_id');  // Foreign key referencing the states table
-            $table->string('status')->default('1'); 
-            $table->string('deleted')->default('0'); 
+            $table->string('status')->default('1');
+            $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable(); // Only update on explicit updates
 

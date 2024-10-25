@@ -48,10 +48,16 @@
                   <li class="nav-item">
                     <a href="{{route('subdistricts.index')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Blocks</p>
+                      <p>Sub Districts</p>
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="{{route('categories.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Categories</p>
+                    </a>
+                  </li>
+                  {{-- <li class="nav-item">
                     <a href="{{route('city.index')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Cities</p>
@@ -62,7 +68,7 @@
                       <i class="far fa-circle nav-icon"></i>
                       <p>Pincodes</p>
                     </a>
-                  </li>
+                  </li> --}}
                 </ul>
               </li>
           </ul>
