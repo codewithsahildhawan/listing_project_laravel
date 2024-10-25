@@ -4,16 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class State extends Model
+class District extends Model
 {
-    protected $table = 'states'; // Define the table name if it's not the plural of the model name
-    protected $primaryKey = 'state_id'; // Custom primary key
-
+    protected $table = 'districts'; // Define the table name if it's not the plural of the model name
+    protected $primaryKey = 'district_id'; // Custom primary key
+    public $incrementing = true;
     protected $fillable = [
-        'state_name',
-        'state_code',
-        'status', 
-        'deleted',
+        'district_name',
+        'state_id',
     ];
 
     public $timestamps = true; // Enable timestamps
@@ -29,8 +27,8 @@ class State extends Model
         return parent::save($options);
     }
 
-    public function districts()
+    public function state()
     {
-        return $this->hasMany(District::class);
+        return $this->belongsTo(State::class, 'state_id'); // Assuming 'state_id' is the foreign key
     }
 }

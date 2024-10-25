@@ -39,6 +39,30 @@
                       <p>States</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{route('districts.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Districts</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('subdistricts.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Blocks</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('city.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Cities</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('city.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Pincodes</p>
+                    </a>
+                  </li>
                 </ul>
               </li>
           </ul>

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('states', function (Blueprint $table) {
             $table->integer('state_id')->length(11)->autoIncrement()->primary();
             $table->string('state_name'); // State name
+            $table->integer('state_code')->length(11);
             $table->string('state_code')->nullable(); // State code, e.g., 'CA'
             $table->string('country_id')->default('IN'); // Country name, default to USA
-            $table->string('status')->default('1'); 
-            $table->string('deleted')->default('0'); 
+            $table->tinyInteger('status')->length(2)->default(1);
+            $table->tinyInteger('deleted')->length(2)->default(0);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable(); // Only update on explicit updates
         });
