@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class State extends Model
 {
-    protected $table = 'states'; // Define the table name if it's not the plural of the model name
-    protected $primaryKey = 'state_id'; // Custom primary key
+    protected $table = 'states';
+    protected $primaryKey = 'state_id';
+    protected $keyType = 'int';
 
     protected $fillable = [
         'state_name',
         'state_code',
-        'status', 
+        'status',
         'deleted',
     ];
 

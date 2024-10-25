@@ -30,7 +30,7 @@
                 @if (session('success'))
                 <div class="col-md-12">
                     <div class="alert alert-success">{{ session('success') }}</div>
-                </div>    
+                </div>
                 @endif
                 <div class="col-md-12 text-right mb-2">
                     <a href="{{route('states.create')}}" class="btn btn-primary">Add State</a>
@@ -53,9 +53,9 @@
                                 <td>{{ $i }}</td>
                                 <td>{{ $state->state_name }}</td>
                                 <td>{{ $state->state_code }}</td>
-                                <td>{!! $state->status === '1' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
+                                <td>{!! $state->status === 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td> <!-- Conditional output for status -->
                                 <td>
-                                    <a href="{{ route('states.edit', $state->state_id) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
+                                    <a href="{{ route('states.edit', ['state' => $state->state_id]) }}" class="btn btn-warning">Edit</a> <!-- Link to edit -->
                                     <form action="{{ route('states.destroy', $state->state_id) }}" method="POST" style="display:inline;"> <!-- Form for delete -->
                                         @csrf
                                         @method('DELETE')

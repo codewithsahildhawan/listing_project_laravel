@@ -12,10 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('states', function (Blueprint $table) {
-            $table->integer('state_id')->length(11)->autoIncrement()->primary();
+            $table->integer('state_id')->autoIncrement()->primary();
             $table->string('state_name'); // State name
             $table->integer('state_code')->length(11);
-            $table->string('state_code')->nullable(); // State code, e.g., 'CA'
             $table->string('country_id')->default('IN'); // Country name, default to USA
             $table->tinyInteger('status')->length(2)->default(1);
             $table->tinyInteger('deleted')->length(2)->default(0);

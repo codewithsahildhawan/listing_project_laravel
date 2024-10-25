@@ -4,22 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\State;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
 class StateController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      */
     /**
      * Show the form for creating a new resource.
      */
 
-    public function index() 
+    public function index()
     {
-        $states = State::where('status', 1)->where('deleted', 0)->get();
+        $states = State::all();
         if (request()->wantsJson()) {
             return response()->json([
                 'success' => true,
@@ -43,6 +44,7 @@ class StateController extends Controller
         $validatedData = $request->validate([
             'state_name' => 'required|string|max:255|unique:states,state_name',
             'state_code' => 'nullable|string|max:10|unique:states,state_code',
+            'status' => 'required|string|in:0,1',
         ]);
 
         // Create and save the new state
@@ -86,32 +88,44 @@ class StateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, State $state)
+    public function update(Request $request, $stateId) // Use $stateId to get the record
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-                'state_name' => [
+        // Find the state using the custom primary key
+        $state = State::where('state_id', $stateId)->firstOrFail(); // Use where() to find by state_id
+
+        // Validate request data
+        $validator = Validator::make($request->all(), [
+            'state_name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('states')->ignore($state->state_id), // Ignore the current state
+                Rule::unique('states')->ignore($state->state_id, 'state_id'), // Ignore the current state's ID
             ],
-            'state_code' => 'nullable|string|max:10',
-            'status' => 'required|string|in:0,1', // Adjust according to your status values
+            'state_code' => 'required|integer|digits_between:1,10',
+            'status' => 'required|string|in:0,1',
         ]);
 
-        // Update state data
-        $state->fill($validatedData);
-
-        // Only update the updated_at timestamp if the state data has changed
-        if ($state->isDirty()) {
-            $state->updated_at = now(); // Set updated_at to current timestamp
-        } else {
-            $state->updated_at = null; // Leave it blank if there's no change
+        // Check if validation fails
+        if ($validator->fails()) {
+            //dd($validator->errors()->all()); // This should show validation errors if they exist
+            return back()->withErrors($validator)->withInput();
         }
 
+        // Get validated data
+        $validatedData = $validator->validated();
+
+        // Fill the state with validated data
+        $state->fill($validatedData);
+
+        // Update the updated_at timestamp if the state data has changed
+        if ($state->isDirty()) {
+            $state->updated_at = now(); // Set to current timestamp
+        }
+
+        // Save the updated state
         $state->save();
 
+        // Redirect back with a success message
         return redirect()->route('states.index')->with('success', 'State updated successfully!');
     }
 

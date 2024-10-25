@@ -29,10 +29,22 @@
             <div class="row">
                 <div class="col-md-12 text-right mb-2"><a href="{{route('states.index')}}" class="btn btn-primary">Back</a></div>
                 <div class="col-md-12 m-50">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                <div class="col-md-12 m-50">
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Edit State ({{ $state->state_name }})</h3>
                         </div>
+
                         <form action="{{ route('states.update', $state->state_id) }}" method="POST">
                             @csrf
                             @method('PUT') <!-- Use PUT for updates -->
@@ -50,6 +62,7 @@
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
+                                        <option value="">Select Status</option>
                                         <option value="1" {{ $state->status === '1' ? 'selected' : '' }}>Active</option>
                                         <option value="0" {{ $state->status === '0' ? 'selected' : '' }}>Inactive</option>
                                     </select>
@@ -68,11 +81,8 @@
 @endsection
 
 @section('extra-script')
-
     <script src="{{ asset('backend_assets/plugins/jquery/jquery.min.js') }}"></script>
-
     <script src="{{ asset('backend_assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
     <script src="{{ asset('backend_assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('backend_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>

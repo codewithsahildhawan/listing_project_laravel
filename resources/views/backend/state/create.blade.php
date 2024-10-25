@@ -50,12 +50,20 @@
                                 <div class="form-group">
                                     <label for="state_name">State Name</label>
                                     <input type="text" class="form-control" id="state_name" name="state_name"
-                                        placeholder="Enter State" value="{{ old('state_name') }}">
+                                        placeholder="Enter State" value="{{ old('state_name') }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="state_code">State Code</label>
                                     <input type="text" class="form-control" id="state_code" name="state_code"
-                                        placeholder="Enter State Code" value="{{ old('state_code') }}">
+                                        placeholder="Enter State Code" value="{{ old('state_code') }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control" required>
+                                        <option value="">Select Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="card-footer">
